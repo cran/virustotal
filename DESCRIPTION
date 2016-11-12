@@ -1,6 +1,6 @@
 Package: virustotal
-Title: R Client for the Virustotal API
-Version: 0.1.0
+Title: R Client for the VirusTotal API
+Version: 0.2.0
 Authors@R: person("Gaurav", "Sood", email = "gsood07@gmail.com", role = c("aut", "cre"))
 Maintainer: Gaurav Sood <gsood07@gmail.com>
 Description: Use VirusTotal, a Google service that analyzes files and URLs 
@@ -17,7 +17,7 @@ Imports: httr, plyr
 Suggests: knitr, rmarkdown, testthat
 RoxygenNote: 5.0.1
 NeedsCompilation: no
-Packaged: 2016-06-02 13:00:50 UTC; gaurav
+Packaged: 2016-11-12 17:43:57 UTC; gsood
 Author: Gaurav Sood [aut, cre]
 Repository: CRAN
-Date/Publication: 2016-06-02 15:11:48
+Date/Publication: 2016-11-12 19:55:15

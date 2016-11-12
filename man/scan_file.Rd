@@ -2,7 +2,7 @@
 % Please edit documentation in R/scan_file.R
 \name{scan_file}
 \alias{scan_file}
-\title{Submit file for scanning}
+\title{Submit a file for scanning}
 \usage{
 scan_file(file_path = NULL, ...)
 }
@@ -12,17 +12,24 @@ scan_file(file_path = NULL, ...)
 \item{\dots}{Additional arguments passed to \code{\link{virustotal_POST}}.}
 }
 \value{
-data.frame with the following columns: scan_id, sha1, resource, response_code, sha256, permalink, md5, verbose_msg
+data.frame with the following columns: 
+\code{scan_id, sha1, resource, response_code, sha256, permalink, md5, verbose_msg}
 }
 \description{
-Submit file for scanning
+Submit a file for scanning
 }
 \examples{
 \dontrun{
+
+# Before calling the function, set the API key using set_key('api_key_here')
+
 scan_file(file_path='path_to_suspicious_file')
 }
 }
 \references{
 \url{https://www.virustotal.com/en/documentation/public-api/}
+}
+\seealso{
+\code{\link{set_key}} for setting the API key
 }
 
