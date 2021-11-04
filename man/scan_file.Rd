@@ -9,7 +9,7 @@ scan_file(file_path = NULL, ...)
 \arguments{
 \item{file_path}{Required; Path to the document}
 
-\item{\dots}{Additional arguments passed to \code{\link{virustotal_POST}}.}
+\item{\dots}{Additional arguments passed to \code{\link{virustotal2_POST}}.}
 }
 \value{
 data.frame with the following columns: 
@@ -27,7 +27,7 @@ scan_file(file_path='path_to_suspicious_file')
 }
 }
 \references{
-\url{https://www.virustotal.com/en/documentation/public-api/}
+\url{https://developers.virustotal.com/v2.0/reference}
 }
 \seealso{
 \code{\link{set_key}} for setting the API key

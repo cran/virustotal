@@ -15,7 +15,7 @@ url_report(url = NULL, scan_id = NULL, scan = 1, ...)
 When \code{1}, submits \code{url} for scanning if no existing reports are found. 
 When scan is set to \code{1}, the result includes a \code{scan_id} field, which can be used again to retrieve the report.}
 
-\item{\dots}{Additional arguments passed to \code{\link{virustotal_GET}}.}
+\item{\dots}{Additional arguments passed to \code{\link{virustotal2_GET}}.}
 }
 \value{
 data.frame with 13 columns: 
@@ -34,7 +34,7 @@ url_report(scan_id = "ebdd15c397d2b0c6f50c3f2df531357d1201ff5976802316405e60880d
 }
 }
 \references{
-\url{https://www.virustotal.com/en/documentation/public-api/}
+\url{https://developers.virustotal.com/v2.0/reference}
 }
 \seealso{
 \code{\link{set_key}} for setting the API key

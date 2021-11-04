@@ -9,7 +9,7 @@ domain_report(domain = NULL, ...)
 \arguments{
 \item{domain}{domain name. String. Required.}
 
-\item{\dots}{Additional arguments passed to \code{\link{virustotal_GET}}.}
+\item{\dots}{Additional arguments passed to \code{\link{virustotal2_GET}}.}
 }
 \value{
 named list with the following possible items: 
@@ -33,7 +33,7 @@ domain_report("http://www.goodsfwrfw.com") # Domain not found
 }
 }
 \references{
-\url{https://www.virustotal.com/en/documentation/public-api/}
+\url{https://developers.virustotal.com/v2.0/reference}
 }
 \seealso{
 \code{\link{set_key}} for setting the API key

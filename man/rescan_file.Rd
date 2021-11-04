@@ -9,7 +9,7 @@ rescan_file(hash = NULL, ...)
 \arguments{
 \item{hash}{Hash for the scan. String. Required.}
 
-\item{\dots}{Additional arguments passed to \code{\link{virustotal_POST}}.}
+\item{\dots}{Additional arguments passed to \code{\link{virustotal2_POST}}.}
 }
 \value{
 data.frame with 12 columns: 
@@ -30,7 +30,7 @@ rescan_file(hash='99017f6ee51415dd410d522d') # incorrect hash
 }
 }
 \references{
-\url{https://www.virustotal.com/en/documentation/public-api/}
+\url{https://developers.virustotal.com/v2.0/reference}
 }
 \seealso{
 \code{\link{set_key}} for setting the API key

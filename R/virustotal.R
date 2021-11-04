@@ -4,13 +4,13 @@
 #' @aliases virustotal
 #'
 #' @description Access virustotal API. See \url{https://www.virustotal.com/}. 
-#' Details about results of calls to the API can be found at \url{https://www.virustotal.com/en/documentation/public-api/}.
+#' Details about results of calls to the API can be found at \url{https://developers.virustotal.com/v2.0/reference}.
 #'
 #' You will need credentials to use this application. 
 #' If you haven't already, get the API Key at \url{https://www.virustotal.com/}.
 #'
 #'  
-#' @importFrom httr GET content POST upload_file
+#' @importFrom httr GET content POST upload_file add_headers
 #' @importFrom plyr rbind.fill ldply
 #' @importFrom utils read.table
 #' @docType package
@@ -20,7 +20,35 @@ NULL
 #' 
 #' Base POST AND GET functions. Not exported.
 #'
-#' GET
+#' GET for the v2 API
+#' 
+#' @param query query list 
+#' @param path  path to the specific API service url
+#' @param key  A character string containing Virustotal API Key. The default is retrieved from \code{Sys.getenv("VirustotalToken")}.
+#' @param \dots Additional arguments passed to \code{\link[httr]{GET}}.
+#' @return list
+
+virustotal2_GET <- function(query=list(), path = path,
+                                     key = Sys.getenv("VirustotalToken"), ...) {
+
+  if (identical(key, "")) {
+        stop("Please set application key via set_key(key='key')).\n")
+  }
+
+  query$apikey <- key
+
+  rate_limit()
+
+  res <- GET("https://www.virustotal.com/", path = paste0("vtapi/v2/", path),
+                                                             query = query, ...)
+  virustotal_check(res)
+  res <- content(res)
+
+  res
+}
+
+#'
+#' GET for the Current V3 API
 #' 
 #' @param query query list 
 #' @param path  path to the specific API service url
@@ -39,16 +67,20 @@ virustotal_GET <- function(query=list(), path = path,
 
   rate_limit()
 
-  res <- GET("http://www.virustotal.com/", path = paste0("vtapi/v2/", path),
-                                                             query = query, ...)
+  res <- GET("https://virustotal.com/", 
+               path = paste0("api/v3/", path),
+               query = query, 
+               add_headers('x-apikey' = key), ...)
+
   virustotal_check(res)
-  res <- content(res)
+  res <- content(res, as = "parsed", type = "application/json")
 
   res
 }
 
+
 #'
-#' POST
+#' POST for the Current V3 API
 #' 
 #' @param query query list 
 #' @param body file 
@@ -57,7 +89,38 @@ virustotal_GET <- function(query=list(), path = path,
 #' @param \dots Additional arguments passed to \code{\link[httr]{POST}}.
 #' @return list
 
-virustotal_POST <- function(query=list(), path = path, body=NULL,
+virustotal_POST <- function(query=list(), path = path, body = NULL,
+                                     key = Sys.getenv("VirustotalToken"), ...) {
+
+  if (identical(key, "")) {
+        stop("Please set application key via set_key(key='key')).\n")
+  }
+
+  rate_limit()
+
+  res <- POST("https://virustotal.com/", 
+               path = paste0("api/v3/", path),
+               body = body,
+               encode = "json",
+               add_headers('x-apikey' = key), ...)
+
+  virustotal_check(res)
+  res <- content(res)
+
+  res
+}
+
+#'
+#' POST for V2 API
+#' 
+#' @param query query list 
+#' @param body file 
+#' @param path  path to the specific API service url
+#' @param key A character string containing Virustotal API Key. The default is retrieved from \code{Sys.getenv("VirustotalToken")}.
+#' @param \dots Additional arguments passed to \code{\link[httr]{POST}}.
+#' @return list
+
+virustotal2_POST <- function(query=list(), path = path, body=NULL,
                                      key = Sys.getenv("VirustotalToken"), ...) {
 
   if (identical(key, "")) {
@@ -68,7 +131,7 @@ virustotal_POST <- function(query=list(), path = path, body=NULL,
 
   rate_limit()
 
-  res <- POST("http://www.virustotal.com/", path = paste0("vtapi/v2/", path),
+  res <- POST("https://www.virustotal.com/", path = paste0("vtapi/v2/", path),
                                                 query = query, body = body, ...)
   virustotal_check(res)
   res <- content(res)

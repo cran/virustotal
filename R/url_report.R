@@ -7,14 +7,14 @@
 #' @param scan String. Optional. Can be 0 or 1. Default is \code{1}. 
 #' When \code{1}, submits \code{url} for scanning if no existing reports are found. 
 #' When scan is set to \code{1}, the result includes a \code{scan_id} field, which can be used again to retrieve the report. 
-#' @param \dots Additional arguments passed to \code{\link{virustotal_GET}}.
+#' @param \dots Additional arguments passed to \code{\link{virustotal2_GET}}.
 #'  
 #' @return data.frame with 13 columns: 
 #' \code{scan_id, resource, url, response_code, scan_date, permalink, verbose_msg, positives, total, .id, detected, result, detail}
 #'  
 #' @export
 #' 
-#' @references \url{https://www.virustotal.com/en/documentation/public-api/}
+#' @references \url{https://developers.virustotal.com/v2.0/reference}
 #' 
 #' @seealso \code{\link{set_key}} for setting the API key
 #'
@@ -36,7 +36,9 @@ url_report <- function(url = NULL, scan_id = NULL, scan = 1, ...) {
 
   params <- list(resource = url, scan_id = scan_id, scan = scan)
 
-  res    <- virustotal_POST(path = "url/report", query = params, ...)
+  .Deprecated("")
+
+  res    <- virustotal2_POST(path = "url/report", query = params, ...)
 
   # Initialize empty data.frame
   res_df <- read.table(text = "", col.names = c("scan_id", "resource", "url",

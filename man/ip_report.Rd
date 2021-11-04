@@ -9,7 +9,7 @@ ip_report(ip = NULL, ...)
 \arguments{
 \item{ip}{a valid IPv4 address in dotted quad notation; String; Required}
 
-\item{\dots}{Additional arguments passed to \code{\link{virustotal_GET}}.}
+\item{\dots}{Additional arguments passed to \code{\link{virustotal2_GET}}.}
 }
 \value{
 named list with the following potential items: 
@@ -29,7 +29,7 @@ ip_report(ip="8.8.8.8")
 }
 }
 \references{
-\url{https://www.virustotal.com/en/documentation/public-api/}
+\url{https://developers.virustotal.com/v2.0/reference}
 }
 \seealso{
 \code{\link{set_key}} for setting the API key

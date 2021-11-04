@@ -2,10 +2,14 @@
 % Please edit documentation in R/virustotal.R
 \name{virustotal_GET}
 \alias{virustotal_GET}
-\title{Base POST AND GET functions. Not exported.}
+\title{GET for the Current V3 API}
 \usage{
-virustotal_GET(query = list(), path = path,
-  key = Sys.getenv("VirustotalToken"), ...)
+virustotal_GET(
+  query = list(),
+  path = path,
+  key = Sys.getenv("VirustotalToken"),
+  ...
+)
 }
 \arguments{
 \item{query}{query list}
@@ -20,5 +24,5 @@ virustotal_GET(query = list(), path = path,
 list
 }
 \description{
-GET
+GET for the Current V3 API
 }

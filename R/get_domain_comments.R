@@ -1,10 +1,10 @@
-#' Get Domain Report
+#' Retrieve comments for an Internet domain
 #'
-#' Retrieves report on a given domain, including passive DNS, urls detected by at least one url scanner. 
-#' Gives category of the domain from bitdefender.
 #' 
-#' @param domain domain name. String. Required.  
-#' @param \dots Additional arguments passed to \code{\link{virustotal2_GET}}.
+#' @param domain domain name. String. Required.
+#' @param limit  Number of entries. Integer. Optional.  Default is 10.  
+#' @param cursor String. Optional.  
+#' @param \dots Additional arguments passed to \code{\link{virustotal_GET}}.
 #' 
 #' @return named list with the following possible items: 
 #' \code{`BitDefender category`, undetected_referrer_samples, whois_timestamp,
@@ -23,22 +23,20 @@
 #' 
 #' # Before calling the function, set the API key using set_key('api_key_here')
 #'    
-#' domain_report("http://www.google.com")
-#' domain_report("http://www.goodsfwrfw.com") # Domain not found
+#' get_domain_comments("http://www.google.com")
+#' get_domain_comments("http://www.goodsfwrfw.com") # Domain not found
 #' }
 
-domain_report <- function(domain = NULL, ...) {
+get_domain_comments <- function(domain = NULL, limit = limit, cursor = cursor, ...) {
 
     if (!is.character(domain)) {
         stop("Must specify domain.\n")
     }
 
-    domain <- gsub("^http://", "", domain)
+    domain <- gsub("^http://|^https://", "", domain)
 
-    .Deprecated("get_domain_info")
-
-    res   <- virustotal2_GET(path = "domain/report",
-                                             query = list(domain = domain), ...)
+    res   <- virustotal_GET(path = paste0("domains/", domain, "/comments"),
+                                             query = list(limit = limit, cursor = cursor), ...)
 
     res
 }
