@@ -1,10 +1,9 @@
-## ----eval=F, install----------------------------------------------------------
-# # Install from CRAN
+## ----eval=FALSE, install------------------------------------------------------
 # install.packages("virustotal")
-# 
-# # Or install development version
-# # library(devtools)
-# # install_github("themains/virustotal")
+
+## ----eval=FALSE, install-dev--------------------------------------------------
+# library(devtools)
+# install_github("themains/virustotal")
 
 ## ----eval=F, load-------------------------------------------------------------
 # library(virustotal)
