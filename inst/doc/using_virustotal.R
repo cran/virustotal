@@ -1,63 +1,74 @@
-## ----eval=FALSE, install------------------------------------------------------
+## ----include = FALSE----------------------------------------------------------
+# Every chunk shows code without running it: the API needs a key and a
+# network, and CRAN has neither. Sample output shown inline was captured
+# from real responses.
+knitr::opts_chunk$set(eval = FALSE)
+
+## ----install------------------------------------------------------------------
 # install.packages("virustotal")
 
-## ----eval=FALSE, install-dev--------------------------------------------------
-# library(devtools)
-# install_github("themains/virustotal")
+## ----install_dev--------------------------------------------------------------
+# pak::pak("themains/virustotal")
 
-## ----eval=F, load-------------------------------------------------------------
+## ----load---------------------------------------------------------------------
 # library(virustotal)
 
-## ----eval=F, api_key----------------------------------------------------------
+## ----api_key------------------------------------------------------------------
 # set_key("your_api_key_here")
 
-## ----eval=F, scan_file--------------------------------------------------------
-# # Submit a file for analysis
+## ----scan_file----------------------------------------------------------------
 # result <- scan_file("path/to/suspicious_file.exe")
 # analysis_id <- result$data$id
 
-## ----eval=F, file_report------------------------------------------------------
-# # Get analysis results using file hash
+## ----file_report--------------------------------------------------------------
 # report <- file_report("99017f6eebbac24f351415dd410d522d")
-# 
-# # Access scan results
+# report
+
+## ----file_report_raw----------------------------------------------------------
 # scan_results <- report$data$attributes$last_analysis_results
-# total_engines <- length(scan_results)
 # detections <- sum(sapply(scan_results, function(x) x$category == "malicious"))
 
-## ----eval=F, rescan_file------------------------------------------------------
-# # Request new analysis of existing file
+## ----rescan_file--------------------------------------------------------------
 # rescan_result <- rescan_file("99017f6eebbac24f351415dd410d522d")
 # new_analysis_id <- rescan_result$data$id
 
-## ----eval=F, scan_url---------------------------------------------------------
-# # Submit URL for analysis
-# url_result <- scan_url("http://suspicious-site.com")
+## ----scan_url-----------------------------------------------------------------
+# url_result <- scan_url("http://www.example.com")
 # analysis_id <- url_result$data$id
 
-## ----eval=F, url_report-------------------------------------------------------
-# # Get analysis results using URL
+## ----url_report---------------------------------------------------------------
 # report <- url_report("http://www.google.com")
-# 
-# # Access scan results
 # scan_results <- report$data$attributes$last_analysis_results
-# threat_score <- report$data$attributes$stats
 
-## ----eval=F, domain-----------------------------------------------------------
-# # Get comprehensive domain analysis
+## ----domain-------------------------------------------------------------------
 # domain_info <- domain_report("google.com")
 # 
-# # Access various data points
 # categories <- domain_info$data$attributes$categories
 # whois_data <- domain_info$data$attributes$whois
-# dns_records <- domain_info$data$attributes$dns_records
+# dns_records <- domain_info$data$attributes$last_dns_records
 
-## ----eval=F, ip---------------------------------------------------------------
-# # Get IP analysis including geolocation and ASN
+## ----ip-----------------------------------------------------------------------
 # ip_info <- ip_report("8.8.8.8")
 # 
-# # Access geo and network information
 # country <- ip_info$data$attributes$country
 # asn <- ip_info$data$attributes$asn
 # network <- ip_info$data$attributes$network
+
+## ----options------------------------------------------------------------------
+# options(
+#   virustotal.requests_per_minute = 1000, # premium keys can go faster
+#   virustotal.max_tries = 3, # attempts per request
+#   virustotal.timeout = 60, # seconds
+#   virustotal.throttle = TRUE # FALSE disables client-side pacing
+# )
+
+## ----errors-------------------------------------------------------------------
+# tryCatch(
+#   file_report("0000000000000000000000000000000000000000"),
+#   virustotal_rate_limit_error = function(e) {
+#     message("Out of quota; retry after ", e$retry_after, "s")
+#   },
+#   virustotal_auth_error = function(e) message("Check the API key"),
+#   virustotal_error = function(e) message("VT error: ", conditionMessage(e))
+# )
 

@@ -11,7 +11,7 @@
 
 <meta name="author" content="Gaurav Sood" />
 
-<meta name="date" content="2026-04-12" />
+<meta name="date" content="2026-08-19" />
 
 <title>Using virustotal</title>
 
@@ -352,7 +352,7 @@ display: none;
 
 <h1 class="title toc-ignore">Using virustotal</h1>
 <h4 class="author">Gaurav Sood</h4>
-<h4 class="date">2026-04-12</h4>
+<h4 class="date">2026-08-19</h4>
 
 </div>
 
@@ -364,22 +364,25 @@ allowing you to scan files and URLs for malware, get domain and IP
 intelligence, and retrieve comprehensive threat analysis reports.</p>
 <div id="installation" class="section level3">
 <h3>Installation</h3>
-<p>To get the current development version from GitHub:</p>
+<p>From CRAN:</p>
 <pre class="r"><code>install.packages(&quot;virustotal&quot;)</code></pre>
-<p>Or install the development version:</p>
-<pre class="r"><code>library(devtools)
-install_github(&quot;themains/virustotal&quot;)</code></pre>
+<p>Or the development version from GitHub, with pak:</p>
+<pre class="r"><code>pak::pak(&quot;themains/virustotal&quot;)</code></pre>
 <div id="load-the-library" class="section level4">
-<h4>Load the library:</h4>
+<h4>Load the library</h4>
 <pre class="r"><code>library(virustotal)</code></pre>
 </div>
 <div id="authentication" class="section level4">
 <h4>Authentication</h4>
 <ol style="list-style-type: decimal">
 <li>Get your free API key from <a href="https://www.virustotal.com/">VirusTotal</a></li>
-<li>Set the API key in your R session:</li>
+<li>Set it once per session:</li>
 </ol>
 <pre class="r"><code>set_key(&quot;your_api_key_here&quot;)</code></pre>
+<p>Or set the <code>VIRUSTOTAL_API_KEY</code> environment variable (for
+example in <code>~/.Renviron</code>) and skip <code>set_key()</code>
+entirely. The historical <code>VirustotalToken</code> variable is still
+honored.</p>
 </div>
 </div>
 <div id="core-functions" class="section level3">
@@ -387,70 +390,86 @@ install_github(&quot;themains/virustotal&quot;)</code></pre>
 <div id="file-analysis" class="section level4">
 <h4>File Analysis</h4>
 <p><strong>Scan a file for malware:</strong></p>
-<pre class="r"><code># Submit a file for analysis
-result &lt;- scan_file(&quot;path/to/suspicious_file.exe&quot;)
+<pre class="r"><code>result &lt;- scan_file(&quot;path/to/suspicious_file.exe&quot;)
 analysis_id &lt;- result$data$id</code></pre>
 <p><strong>Get file analysis report:</strong></p>
-<pre class="r"><code># Get analysis results using file hash
-report &lt;- file_report(&quot;99017f6eebbac24f351415dd410d522d&quot;)
-
-# Access scan results
-scan_results &lt;- report$data$attributes$last_analysis_results
-total_engines &lt;- length(scan_results)
+<pre class="r"><code>report &lt;- file_report(&quot;99017f6eebbac24f351415dd410d522d&quot;)
+report</code></pre>
+<pre><code>## VirusTotal API Response
+## ======================
+##
+## Type: File Report
+## ID: 99017f6eebbac24f351415dd410d522d
+## Resource Type: file
+##
+## Detection Summary:
+##   Malicious: 61
+##   Suspicious: 0
+##   Undetected: 4
+##   Harmless: 0</code></pre>
+<p>The raw response stays a list underneath:</p>
+<pre class="r"><code>scan_results &lt;- report$data$attributes$last_analysis_results
 detections &lt;- sum(sapply(scan_results, function(x) x$category == &quot;malicious&quot;))</code></pre>
 <p><strong>Request file rescan:</strong></p>
-<pre class="r"><code># Request new analysis of existing file
-rescan_result &lt;- rescan_file(&quot;99017f6eebbac24f351415dd410d522d&quot;)
+<pre class="r"><code>rescan_result &lt;- rescan_file(&quot;99017f6eebbac24f351415dd410d522d&quot;)
 new_analysis_id &lt;- rescan_result$data$id</code></pre>
 </div>
 <div id="url-analysis" class="section level4">
 <h4>URL Analysis</h4>
 <p><strong>Scan a URL:</strong></p>
-<pre class="r"><code># Submit URL for analysis
-url_result &lt;- scan_url(&quot;http://suspicious-site.com&quot;)
+<pre class="r"><code>url_result &lt;- scan_url(&quot;http://www.example.com&quot;)
 analysis_id &lt;- url_result$data$id</code></pre>
 <p><strong>Get URL analysis report:</strong></p>
-<pre class="r"><code># Get analysis results using URL
-report &lt;- url_report(&quot;http://www.google.com&quot;)
-
-# Access scan results
-scan_results &lt;- report$data$attributes$last_analysis_results
-threat_score &lt;- report$data$attributes$stats</code></pre>
+<pre class="r"><code>report &lt;- url_report(&quot;http://www.google.com&quot;)
+scan_results &lt;- report$data$attributes$last_analysis_results</code></pre>
 </div>
 <div id="domain-intelligence" class="section level4">
 <h4>Domain Intelligence</h4>
-<p><strong>Get domain information:</strong></p>
-<pre class="r"><code># Get comprehensive domain analysis
-domain_info &lt;- domain_report(&quot;google.com&quot;)
+<pre class="r"><code>domain_info &lt;- domain_report(&quot;google.com&quot;)
 
-# Access various data points
 categories &lt;- domain_info$data$attributes$categories
 whois_data &lt;- domain_info$data$attributes$whois
-dns_records &lt;- domain_info$data$attributes$dns_records</code></pre>
+dns_records &lt;- domain_info$data$attributes$last_dns_records</code></pre>
 </div>
 <div id="ip-address-intelligence" class="section level4">
 <h4>IP Address Intelligence</h4>
-<p><strong>Get IP address information:</strong></p>
-<pre class="r"><code># Get IP analysis including geolocation and ASN
-ip_info &lt;- ip_report(&quot;8.8.8.8&quot;)
+<pre class="r"><code>ip_info &lt;- ip_report(&quot;8.8.8.8&quot;)
 
-# Access geo and network information
 country &lt;- ip_info$data$attributes$country
 asn &lt;- ip_info$data$attributes$asn
 network &lt;- ip_info$data$attributes$network</code></pre>
 </div>
 </div>
-<div id="rate-limiting" class="section level3">
-<h3>Rate Limiting</h3>
-<p>The package automatically handles VirusTotal’s rate limits (4
-requests per minute for free accounts). You don’t need to implement your
-own rate limiting.</p>
+<div id="rate-limiting-retries-and-timeouts" class="section level3">
+<h3>Rate Limiting, Retries and Timeouts</h3>
+<p>The package paces itself to the public API’s allowance (4 requests
+per minute) and retries transient failures (HTTP 429 and 503), honoring
+the server’s <code>Retry-After</code> header. Four options control
+this:</p>
+<pre class="r"><code>options(
+  virustotal.requests_per_minute = 1000, # premium keys can go faster
+  virustotal.max_tries = 3, # attempts per request
+  virustotal.timeout = 60, # seconds
+  virustotal.throttle = TRUE # FALSE disables client-side pacing
+)</code></pre>
 </div>
 <div id="error-handling" class="section level3">
 <h3>Error Handling</h3>
-<p>All functions include comprehensive input validation and will provide
-clear error messages for common issues like missing API keys or invalid
-parameters.</p>
+<p>API failures are typed conditions, so specific failures can be
+handled without string-matching messages:</p>
+<pre class="r"><code>tryCatch(
+  file_report(&quot;0000000000000000000000000000000000000000&quot;),
+  virustotal_rate_limit_error = function(e) {
+    message(&quot;Out of quota; retry after &quot;, e$retry_after, &quot;s&quot;)
+  },
+  virustotal_auth_error = function(e) message(&quot;Check the API key&quot;),
+  virustotal_error = function(e) message(&quot;VT error: &quot;, conditionMessage(e))
+)</code></pre>
+<p>The classes are <code>virustotal_auth_error</code>,
+<code>virustotal_rate_limit_error</code> (with a
+<code>retry_after</code> field),
+<code>virustotal_validation_error</code> (bad input, thrown before any
+network traffic), and their parent <code>virustotal_error</code>.</p>
 </div>
 </div>
 
