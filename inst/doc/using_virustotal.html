@@ -11,7 +11,7 @@
 
 <meta name="author" content="Gaurav Sood" />
 
-<meta name="date" content="2026-08-19" />
+<meta name="date" content="2026-11-05" />
 
 <title>Using virustotal</title>
 
@@ -352,13 +352,13 @@ display: none;
 
 <h1 class="title toc-ignore">Using virustotal</h1>
 <h4 class="author">Gaurav Sood</h4>
-<h4 class="date">2026-08-19</h4>
+<h4 class="date">2026-11-05</h4>
 
 </div>
 
 
-<div id="using-virustotal" class="section level2">
-<h2>Using virustotal</h2>
+<div id="overview" class="section level2">
+<h2>Overview</h2>
 <p>The virustotal package provides access to the VirusTotal API v3,
 allowing you to scan files and URLs for malware, get domain and IP
 intelligence, and retrieve comprehensive threat analysis reports.</p>
@@ -391,7 +391,8 @@ honored.</p>
 <h4>File Analysis</h4>
 <p><strong>Scan a file for malware:</strong></p>
 <pre class="r"><code>result &lt;- scan_file(&quot;path/to/suspicious_file.exe&quot;)
-analysis_id &lt;- result$data$id</code></pre>
+analysis_id &lt;- result$data$id
+analysis &lt;- get_analysis(analysis_id)</code></pre>
 <p><strong>Get file analysis report:</strong></p>
 <pre class="r"><code>report &lt;- file_report(&quot;99017f6eebbac24f351415dd410d522d&quot;)
 report</code></pre>
@@ -418,7 +419,8 @@ new_analysis_id &lt;- rescan_result$data$id</code></pre>
 <h4>URL Analysis</h4>
 <p><strong>Scan a URL:</strong></p>
 <pre class="r"><code>url_result &lt;- scan_url(&quot;http://www.example.com&quot;)
-analysis_id &lt;- url_result$data$id</code></pre>
+analysis_id &lt;- url_result$data$id
+analysis &lt;- get_analysis(analysis_id)</code></pre>
 <p><strong>Get URL analysis report:</strong></p>
 <pre class="r"><code>report &lt;- url_report(&quot;http://www.google.com&quot;)
 scan_results &lt;- report$data$attributes$last_analysis_results</code></pre>

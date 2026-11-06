@@ -19,6 +19,7 @@ knitr::opts_chunk$set(eval = FALSE)
 ## ----scan_file----------------------------------------------------------------
 # result <- scan_file("path/to/suspicious_file.exe")
 # analysis_id <- result$data$id
+# analysis <- get_analysis(analysis_id)
 
 ## ----file_report--------------------------------------------------------------
 # report <- file_report("99017f6eebbac24f351415dd410d522d")
@@ -35,6 +36,7 @@ knitr::opts_chunk$set(eval = FALSE)
 ## ----scan_url-----------------------------------------------------------------
 # url_result <- scan_url("http://www.example.com")
 # analysis_id <- url_result$data$id
+# analysis <- get_analysis(analysis_id)
 
 ## ----url_report---------------------------------------------------------------
 # report <- url_report("http://www.google.com")
