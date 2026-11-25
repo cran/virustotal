@@ -70,7 +70,7 @@ knitr::opts_chunk$set(eval = FALSE)
 #   virustotal_rate_limit_error = function(e) {
 #     message("Out of quota; retry after ", e$retry_after, "s")
 #   },
-#   virustotal_auth_error = function(e) message("Check the API key"),
+#   virustotal_auth_error = function(e) message(conditionMessage(e)),
 #   virustotal_error = function(e) message("VT error: ", conditionMessage(e))
 # )
 

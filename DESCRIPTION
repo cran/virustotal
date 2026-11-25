@@ -1,6 +1,6 @@
 Package: virustotal
 Title: R Client for the 'VirusTotal' API
-Version: 0.7.1
+Version: 0.8.0
 Authors@R: person("Gaurav", "Sood", email = "gsood07@gmail.com",
                   role = c("aut", "cre"))
 Description: Provides a comprehensive R interface to the 'VirusTotal' API v3.0
@@ -26,8 +26,8 @@ Config/testthat/edition: 3
 Config/Needs/website: pkgdown
 Config/roxygen2/version: 8.0.0
 NeedsCompilation: no
-Packaged: 2026-11-06 04:38:53 UTC; soodoku
+Packaged: 2026-11-25 06:17:31 UTC; soodoku
 Author: Gaurav Sood [aut, cre]
 Maintainer: Gaurav Sood <gsood07@gmail.com>
 Repository: CRAN
-Date/Publication: 2026-11-06 05:00:02 UTC
+Date/Publication: 2026-11-25 07:00:02 UTC
